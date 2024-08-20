@@ -23,6 +23,7 @@
     <p id="userId"></p>
     <p id="displayName"></p>
     <p id="statusMessage"></p>
+    <p id="getDecodedIDToken"></p>
   </section>
 
   <form id="form" class="container m-4 pl-4" method="POST">
@@ -102,7 +103,14 @@
         document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
         document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
         document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
-        
+        document.getElementById("getDecodedIDToken").innerHTML = '<b>Email:</b> ' + liff.getDecodedIDToken().email;
+
+        // Store profile data to include in form submission
+        document.getElementById("form").dataset.userId = profile.userId;
+        document.getElementById("form").dataset.displayName = profile.displayName;
+        document.getElementById("form").dataset.statusMessage = profile.statusMessage;
+        document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
+
       }).catch(err => console.error(err));
     }
 
@@ -122,6 +130,13 @@
 
       // Collect the form data
       var formData = new FormData(this);
+
+      // Append LIFF profile data to the form data
+      formData.append("UserId", this.dataset.userId);
+      formData.append("DisplayName", this.dataset.displayName);
+      formData.append("StatusMessage", this.dataset.statusMessage);
+      formData.append("pictureUrl", this.dataset.pictureUrl);
+
       var keyValuePairs = [];
       for (var pair of formData.entries()) {
         keyValuePairs.push(pair[0] + "=" + pair[1]);
