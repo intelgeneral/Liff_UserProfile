@@ -23,7 +23,7 @@
     <p id="userId"></p>
     <p id="displayName"></p>
     <p id="statusMessage"></p>
-    <p id="getDecodedIDToken"></p>
+    
   </section>
 
   <form id="form" class="container m-4 pl-4" method="POST">
@@ -103,7 +103,7 @@
         document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
         document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
         document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
-        document.getElementById("getDecodedIDToken").innerHTML = '<b>Email:</b> ' + liff.getDecodedIDToken().email;
+        
 
         // Debugging logs
         console.log("Profile Data: ", profile);
