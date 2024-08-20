@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,13 +105,16 @@
         document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
         document.getElementById("getDecodedIDToken").innerHTML = '<b>Email:</b> ' + liff.getDecodedIDToken().email;
 
+        // Debugging logs
+        console.log("Profile Data: ", profile);
+
         // Store profile data to include in form submission
         document.getElementById("form").dataset.userId = profile.userId;
         document.getElementById("form").dataset.displayName = profile.displayName;
         document.getElementById("form").dataset.statusMessage = profile.statusMessage;
         document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
 
-      }).catch(err => console.error(err));
+      }).catch(err => console.error("Error getting profile:", err));
     }
 
     liff.init({ liffId: "2006115374-wQ7pvRxv" }, () => {
@@ -120,7 +123,7 @@
       } else {
         liff.login();
       }
-    }, err => console.error(err.code, err.message));
+    }, err => console.error("LIFF Initialization Error:", err.code, err.message));
 
     document.getElementById("form").addEventListener("submit", function (e) {
       e.preventDefault(); // Prevent the default form submission
@@ -131,15 +134,21 @@
       // Collect the form data
       var formData = new FormData(this);
 
+      // Debugging logs
+      console.log("Form Data before appending profile:", Object.fromEntries(formData));
+
       // Append LIFF profile data to the form data
-      formData.append("UserId", this.dataset.userId);
-      formData.append("DisplayName", this.dataset.displayName);
-      formData.append("StatusMessage", this.dataset.statusMessage);
-      formData.append("pictureUrl", this.dataset.pictureUrl);
+      formData.append("UserId", this.dataset.userId || "Not Available");
+      formData.append("DisplayName", this.dataset.displayName || "Not Available");
+      formData.append("StatusMessage", this.dataset.statusMessage || "Not Available");
+      formData.append("pictureUrl", this.dataset.pictureUrl || "Not Available");
+
+      // Debugging logs
+      console.log("Form Data after appending profile:", Object.fromEntries(formData));
 
       var keyValuePairs = [];
       for (var pair of formData.entries()) {
-        keyValuePairs.push(pair[0] + "=" + pair[1]);
+        keyValuePairs.push(pair[0] + "=" + encodeURIComponent(pair[1]));
       }
 
       var formDataString = keyValuePairs.join("&");
@@ -152,13 +161,13 @@
           method: "POST",
           body: formDataString,
           headers: {
-            "Content-Type": "text/plain;charset=utf-8",
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
           },
         }
       )
       .then(function (response) {
         if (response) {
-          return response; // Assuming your script returns JSON response
+          return response.json(); // Assuming your script returns JSON response
         } else {
           throw new Error("Failed to submit the form.");
         }
@@ -177,7 +186,7 @@
         }, 2600);
       })
       .catch(function (error) {
-        console.error(error);
+        console.error("Submission Error:", error);
         document.getElementById("message").textContent = "An error occurred while submitting the form.";
         document.getElementById("message").style.display = "block";
       });
