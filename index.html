@@ -8,6 +8,14 @@
   <style>
     #pictureUrl { display: block; margin: 0 auto; }
   </style>
+  <style>
+  .box {
+    border: 2px solid #3273dc; /* Bulma's primary color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Add some padding */
+  }
+</style>
+
 </head>
 <body>
   <section class="hero is-primary is-bold">
@@ -18,13 +26,15 @@
     </div>
   </section>
 
-  <section class="container m-4 pl-4">
+<section class="container m-4 pl-4">
+  <div class="box">
     <img id="pictureUrl" width="50%">
     <p id="userId"></p>
     <p id="displayName"></p>
     <p id="statusMessage"></p>
-    
-  </section>
+  </div>
+</section>
+
 
   <form id="form" class="container m-4 pl-4" method="POST">
 	  <!--
