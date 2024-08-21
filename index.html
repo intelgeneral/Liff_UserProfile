@@ -198,13 +198,11 @@
           throw new Error("Failed to submit the form.");
         }
       })
-      .then(function (data) {
-        document.getElementById("message").textContent = "Data submitted successfully!";
-        document.getElementById("message").style.display = "block";
-        document.getElementById("message").style.backgroundColor = "green";
-        document.getElementById("message").style.color = "beige";
-        document.getElementById("submit-button").disabled = false;
-        document.getElementById("form").reset();
+.then(function (data) {
+    alert("Data submitted successfully!");
+    liff.closeWindow();
+})
+
 
         setTimeout(function () {
           document.getElementById("message").textContent = "";
