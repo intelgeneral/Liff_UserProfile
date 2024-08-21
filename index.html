@@ -1,203 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My LIFF and Data Entry Form</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
-  <style>
-    #pictureUrl { display: block; margin: 0 auto; }
-  </style>
-</head>
-<body>
-  <section class="hero is-primary is-bold">
-    <div class="hero-body">
+  <head>
+    <title>Login 08</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      #pictureUrl { display: block; margin: 0 auto; }
+    </style>
+  </head>
+  <body>
+    <section class="ftco-section">
       <div class="container">
-        <h1 class="title">Register UsersLine</h1>
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Login #08</h2>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-5">
+            <div class="login-wrap p-4 p-md-5">
+              <div class="icon d-flex align-items-center justify-content-center">
+                <span class="fa fa-user-o"></span>
+              </div>
+              <h3 class="text-center mb-4">Have an account?</h3>
+              <img id="pictureUrl" width="25%">
+              <p id="userId"></p>
+              <p id="displayName"></p>
+              <p id="statusMessage"></p>
+              <form id="form" class="login-form" method="POST">
+                <div class="form-group">
+                  <input type="text" class="form-control rounded-left" placeholder="Username" name="Client Name" required>
+                </div>
+                <div class="form-group d-flex">
+                  <input type="password" class="form-control rounded-left" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control rounded-left" placeholder="Room No" name="RoomNo" required>
+                </div>
+                <div class="form-group">
+                  <label class="label">Gender</label>
+                  <div class="control">
+                    <label class="radio">
+                      <input type="radio" name="Gender" value="male"> Male
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="Gender" value="female"> Female
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" name="Agree To Terms" value="yes"> I agree to the terms and conditions
+                  </label>
+                </div>
+                <div class="form-group">
+                  <textarea class="textarea form-control rounded-left" placeholder="Any additional information" name="Notes"></textarea>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary rounded submit p-3 px-5" id="submit-button">Get Started</button>
+                  <button class="btn btn-danger rounded submit p-3 px-5" type="reset">Cancel</button>
+                </div>
+              </form>
+              <div id="message" style="display: none; margin: 20px; font-weight: bold; color: green; padding: 8px; background-color: beige; border-radius: 4px; border-color: aquamarine;"></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="container m-4 pl-4">
-    <img id="pictureUrl" width="25%">
-    <p id="userId"></p>
-    <p id="displayName"></p>
-    <p id="statusMessage"></p>
-    
-  </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
+    <script>
+      function runApp() {
+        liff.getProfile().then(profile => {
+          document.getElementById("pictureUrl").src = profile.pictureUrl;
+          document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
+          document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
+          document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
 
-  <form id="form" class="container m-4 pl-4" method="POST">
-    <div class="field">
-      <label class="label">Client Name</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Your Client Name" name="Client Name" />
-      </div>
-    </div>
-	
-	<div class="field">
-      <label class="label">RoomNo</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Your RoomNo" name="RoomNo" />
-      </div>
-    </div>
+          document.getElementById("form").dataset.userId = profile.userId;
+          document.getElementById("form").dataset.displayName = profile.displayName;
+          document.getElementById("form").dataset.statusMessage = profile.statusMessage;
+          document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
 
-    <!-- <div class="field">
-      <label class="label">Email</label>
-      <div class="control">
-        <input class="input" type="email" placeholder="Your Email" name="Email" />
-      </div>
-    </div> -->
-
-    <!-- <div class="field">
-      <label class="label">Password</label>
-      <div class="control">
-        <input class="input" type="password" placeholder="Your Password" name="Password" />
-      </div>
-    </div> -->
-
-    <!--<div class="field">
-      <label class="label">Date of Birth</label>
-      <div class="control">
-        <input class="input" type="date" placeholder="Your Date of Birth" name="DOB" />
-      </div>
-    </div> -->
-
-    <div class="field">
-      <label class="label">Gender</label>
-      <div class="control">
-        <label class="radio">
-          <input type="radio" name="Gender" value="male" /> Male
-        </label>
-        <label class="radio">
-          <input type="radio" name="Gender" value="female" /> Female
-        </label>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Agree to Terms</label>
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="Agree To Terms" value="yes" /> I agree to the terms and conditions
-        </label>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Additional Information</label>
-      <div class="control">
-        <textarea class="textarea" placeholder="Any additional information" name="Notes"></textarea>
-      </div>
-    </div>
-
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-primary" type="submit" id="submit-button">Sign Up</button>
-      </div>
-      <div class="control">
-        <button class="button is-danger" type="reset">Cancel</button>
-      </div>
-    </div>
-  </form>
-
-  <div id="message" style="display: none; margin: 20px; font-weight: bold; color: green; padding: 8px; background-color: beige; border-radius: 4px; border-color: aquamarine;"></div>
-
-  <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
-  <script>
-    function runApp() {
-      liff.getProfile().then(profile => {
-        document.getElementById("pictureUrl").src = profile.pictureUrl;
-        document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
-        document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
-        document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
-        
-
-        // Debugging logs
-        console.log("Profile Data: ", profile);
-
-        // Store profile data to include in form submission
-        document.getElementById("form").dataset.userId = profile.userId;
-        document.getElementById("form").dataset.displayName = profile.displayName;
-        document.getElementById("form").dataset.statusMessage = profile.statusMessage;
-        document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
-
-      }).catch(err => console.error("Error getting profile:", err));
-    }
-
-    liff.init({ liffId: "2006115374-wQ7pvRxv" }, () => {
-      if (liff.isLoggedIn()) {
-        runApp();
-      } else {
-        liff.login();
-      }
-    }, err => console.error("LIFF Initialization Error:", err.code, err.message));
-
-    document.getElementById("form").addEventListener("submit", function (e) {
-      e.preventDefault(); // Prevent the default form submission
-      document.getElementById("message").textContent = "Submitting..";
-      document.getElementById("message").style.display = "block";
-      document.getElementById("submit-button").disabled = true;
-
-      // Collect the form data
-      var formData = new FormData(this);
-
-      // Debugging logs
-      console.log("Form Data before appending profile:", Object.fromEntries(formData));
-
-      // Append LIFF profile data to the form data
-      formData.append("UserId", this.dataset.userId || "Not Available");
-      formData.append("DisplayName", this.dataset.displayName || "Not Available");
-      formData.append("StatusMessage", this.dataset.statusMessage || "Not Available");
-      formData.append("pictureUrl", this.dataset.pictureUrl || "Not Available");
-
-      // Debugging logs
-      console.log("Form Data after appending profile:", Object.fromEntries(formData));
-
-      var keyValuePairs = [];
-      for (var pair of formData.entries()) {
-        keyValuePairs.push(pair[0] + "=" + encodeURIComponent(pair[1]));
+        }).catch(err => console.error("Error getting profile:", err));
       }
 
-      var formDataString = keyValuePairs.join("&");
-
-      // Send a POST request to your Google Apps Script
-      fetch(
-        "https://script.google.com/macros/s/AKfycbyWB5PM1gxl3UVVkmHMTyv8hRxd3-jBdoCfODX2YRPKgAw0VFM5O1TPEHTFH694Erk2sg/exec",
-        {
-          redirect: "follow",
-          method: "POST",
-          body: formDataString,
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        }
-      )
-      .then(function (response) {
-        if (response) {
-          return response.json(); // Assuming your script returns JSON response
+      liff.init({ liffId: "2006115374-wQ7pvRxv" }, () => {
+        if (liff.isLoggedIn()) {
+          runApp();
         } else {
-          throw new Error("Failed to submit the form.");
+          liff.login();
         }
-      })
-      .then(function (data) {
-        document.getElementById("message").textContent = "Data submitted successfully!";
-        document.getElementById("message").style.display = "block";
-        document.getElementById("message").style.backgroundColor = "green";
-        document.getElementById("message").style.color = "beige";
-        document.getElementById("submit-button").disabled = false;
-        document.getElementById("form").reset();
+      }, err => console.error("LIFF Initialization Error:", err.code, err.message));
 
-        setTimeout(function () {
-          document.getElementById("message").textContent = "";
-          document.getElementById("message").style.display = "none";
-        }, 2600);
-      })
-      .catch(function (error) {
-        console.error("Submission Error:", error);
-        document.getElementById("message").textContent = "An error occurred while submitting the form.";
+      document.getElementById("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        document.getElementById("message").textContent = "Submitting..";
         document.getElementById("message").style.display = "block";
+        document.getElementById("submit-button").disabled = true;
+
+        var formData = new FormData(this);
+
+        formData.append("UserId", this.dataset.userId || "Not Available");
+        formData.append("DisplayName", this.dataset.displayName || "Not Available");
+        formData.append("StatusMessage", this.dataset.statusMessage || "Not Available");
+        formData.append("pictureUrl", this.dataset.pictureUrl || "Not Available");
+
+        var keyValuePairs = [];
+        for (var pair of formData.entries()) {
+          keyValuePairs.push(pair[0] + "=" + encodeURIComponent(pair[1]));
+        }
+
+        var formDataString = keyValuePairs.join("&");
+
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyWB5PM1gxl3UVVkmHMTyv8hRxd3-jBdoCfODX2YRPKgAw0VFM5O1TPEHTFH694Erk2sg/exec",
+          {
+            redirect: "follow",
+            method: "POST",
+            body: formDataString,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            },
+          }
+        )
+        .then(function (response) {
+          if (response) {
+            return response.json();
+          } else {
+            throw new Error("Failed to submit the form.");
+          }
+        })
+        .then(function (data) {
+          document.getElementById("message").textContent = "Data submitted successfully!";
+          document.getElementById("message").style.display = "block";
+          document.getElementById("message").style.backgroundColor = "green";
+          document.getElementById("message").style.color = "beige";
+          document.getElementById("submit-button").disabled = false;
+          document.getElementById("form").reset();
+
+          setTimeout(function () {
+            document.getElementById("message").textContent = "";
+            document.getElementById("message").style.display = "none";
+          }, 2600);
+        })
+        .catch(function (error) {
+          console.error("Submission Error:", error);
+          document.getElementById("message").textContent = "An error occurred while submitting the form.";
+          document.getElementById("message").style.display = "block";
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
