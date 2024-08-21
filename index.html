@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My LIFF and Data Entry Form</title>
+  <title>LIFF Register UsersLine</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   <style>
     #pictureUrl { display: block; margin: 0 auto; }
@@ -27,12 +27,14 @@
   </section>
 
   <form id="form" class="container m-4 pl-4" method="POST">
+	  <!--
     <div class="field">
       <label class="label">Client Name</label>
       <div class="control">
         <input class="input" type="text" placeholder="Your Client Name" name="Client Name" />
       </div>
     </div>
+	  -->
 	
 	<div class="field">
       <label class="label">RoomNo</label>
@@ -83,20 +85,24 @@
       </div>
     </div>
 
+	  <!--
     <div class="field">
       <label class="label">Additional Information</label>
       <div class="control">
         <textarea class="textarea" placeholder="Any additional information" name="Notes"></textarea>
       </div>
     </div>
-
+-->
+	  
     <div class="field is-grouped">
       <div class="control">
         <button class="button is-primary" type="submit" id="submit-button">Sign Up</button>
       </div>
+	    <!--
       <div class="control">
         <button class="button is-danger" type="reset">Cancel</button>
       </div>
+	    -->
     </div>
   </form>
 
