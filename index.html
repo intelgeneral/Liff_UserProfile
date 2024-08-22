@@ -205,6 +205,12 @@
         document.getElementById("message").style.color = "beige";
         document.getElementById("submit-button").disabled = false;
         document.getElementById("form").reset();
+	liff.closeWindow();
+    	}).catch((err) => {
+        console.log('send message error', err);
+    	});
+
+    alert("ข้อมูลถูกบันทึกแล้ว");
 
 
         setTimeout(function () {
