@@ -213,8 +213,21 @@
 		alert("ข้อมูลถูกบันทึกแล้ว");
 	    liff.closeWindow();
 	}
-
-
+	      //Sent 
+	liff
+	  .sendMessages([
+	    {
+	      type: "text",
+	      text: "Hello, World!",
+	    },
+	  ])
+	  .then(() => {
+	    console.log("message sent");
+	  })
+	  .catch((err) => {
+	    console.log("error", err);
+	  });
+	// End Sent
 
         setTimeout(function () {
           document.getElementById("message").textContent = "";
