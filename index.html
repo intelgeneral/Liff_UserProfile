@@ -214,14 +214,17 @@
           document.getElementById("message").style.display = "none";
         }, 2600);
       })
+	
+	alert("ข้อมูลถูกบันทึกแล้ว");
+		liff.closeWindow();
+	    
       .catch(function (error) {
         console.error("Submission Error:", error);
         document.getElementById("message").textContent = "An error occurred while submitting the form.";
         document.getElementById("message").style.display = "block";
       });
     });
-	alert("ข้อมูลถูกบันทึกแล้ว");
-	liff.closeWindow();
+
   </script>
 </body>
 </html>
