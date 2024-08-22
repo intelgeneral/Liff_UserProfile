@@ -205,7 +205,8 @@
         document.getElementById("message").style.color = "beige";
         document.getElementById("submit-button").disabled = false;
         document.getElementById("form").reset();
-	
+		alert("ข้อมูลถูกบันทึกแล้ว");
+		
 
 
 
@@ -215,8 +216,7 @@
         }, 2600);
       })
 	
-	alert("ข้อมูลถูกบันทึกแล้ว");
-		liff.closeWindow();
+
 	    
       .catch(function (error) {
         console.error("Submission Error:", error);
