@@ -91,12 +91,17 @@
         document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
         document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
         document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
+        
+
+        // Debugging logs
+        console.log("Profile Data: ", profile);
 
         // Store profile data to include in form submission
         document.getElementById("form").dataset.userId = profile.userId;
         document.getElementById("form").dataset.displayName = profile.displayName;
         document.getElementById("form").dataset.statusMessage = profile.statusMessage;
         document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
+
       }).catch(err => console.error("Error getting profile:", err));
     }
 
@@ -117,11 +122,17 @@
       // Collect the form data
       var formData = new FormData(this);
 
+      // Debugging logs
+      console.log("Form Data before appending profile:", Object.fromEntries(formData));
+
       // Append LIFF profile data to the form data
       formData.append("UserId", this.dataset.userId || "Not Available");
       formData.append("DisplayName", this.dataset.displayName || "Not Available");
       formData.append("StatusMessage", this.dataset.statusMessage || "Not Available");
       formData.append("pictureUrl", this.dataset.pictureUrl || "Not Available");
+
+      // Debugging logs
+      console.log("Form Data after appending profile:", Object.fromEntries(formData));
 
       var keyValuePairs = [];
       for (var pair of formData.entries()) {
@@ -156,36 +167,45 @@
         document.getElementById("message").style.color = "beige";
         document.getElementById("submit-button").disabled = false;
         document.getElementById("form").reset();
-
-        // closeWindow call
-        if (!liff.isInClient()) {
-          window.alert('This button is unavailable as LIFF is currently being opened in an external browser.');
-        } else {
-          alert("ข้อมูลถูกบันทึกแล้ว");
-          liff.closeWindow();
-        }
-
-        // Send message
-        liff.sendMessages([
-          {
-            type: "text",
-            text: "ข้อมูลถูกบันทึกแล้ว",
-          },
-        ])
-        .then(() => {
-          console.log("message sent");
-        })
-        .catch((err) => {
-          console.log("error", err);
-        });
+		
+		// closeWindow call
+	if (!liff.isInClient()) {
+	    window.alert('This button is unavailable as LIFF is currently being opened in an external browser.');
+	} else {
+		alert("ข้อมูลถูกบันทึกแล้ว");
+	    liff.closeWindow();
+	}
+	      //Sent 
+	liff
+	  .sendMessages([
+	    {
+	      type: "text",
+	      text: "ข้อมูลถูกบันทึกแล้ว",
+	    },
+	  ])
+	  .then(() => {
+	    console.log("message sent");
+	  })
+	  .catch((err) => {
+	    console.log("error", err);
+	  });
+	// End Sent
 
         setTimeout(function () {
           document.getElementById("message").textContent = "";
           document.getElementById("message").style.display = "none";
         }, 2600);
       })
+	
+
+	    
       .catch(function (error) {
-        console.error("Error submitting form:", error);
-        document.getElementById("message").textContent = "Error submitting form.";
+        console.error("Submission Error:", error);
+        document.getElementById("message").textContent = "An error occurred while submitting the form.";
         document.getElementById("message").style.display = "block";
-        document.getElementById("message").style.backgroundColor = "red";
+      });
+    });
+
+  </script>
+</body>
+</html>
