@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIFF Register UsersLine</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <style>
+    #pictureUrl { display: block; margin: 0 auto; }
+    .box {
+      border: 4px solid #96CEB4;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .field {
+      margin-bottom: 1.5rem;
+    }
+    .control input, .control textarea {
+      border-radius: 4px;
+    }
+    .button.is-primary {
+      background-color: #00d1b2;
+      border-color: transparent;
+    }
+    .button.is-primary:hover {
+      background-color: #00b89c;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero is-primary is-bold">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">Register UsersLine</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="container m-4 pl-4">
+    <div class="box">
+      <img id="pictureUrl" width="75%">
+      <p id="userId" class="has-text-white has-text-centered"></p>
+      <p id="displayName" class="has-text-primary has-text-centered"></p>
+      <p id="statusMessage" class="has-text-primary has-text-centered"></p>
+    </div>
+  </section>
+
+  <form id="form" class="container m-4 pl-4" method="POST">
+    <div class="field">
+      <label class="label">Your RoomNo</label>
+      <div class="control">
+        <input class="input" type="number" placeholder="4 Digit" name="RoomNo" maxlength="4" minlength="4" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Gender</label>
+      <div class="control">
+        <label class="radio">
+          <input type="radio" name="Gender" value="male" /> Male
+        </label>
+        <label class="radio">
+          <input type="radio" name="Gender" value="female" /> Female
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Agree to Terms</label>
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" name="Agree To Terms" value="yes" /> I agree to the terms and conditions
+        </label>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-primary" type="submit" id="submit-button">Sign Up</button>
+      </div>
+    </div>
+  </form>
+
+  <div id="message" style="display: none; margin: 20px; font-weight: bold; color: green; padding: 8px; background-color: beige; border-radius: 4px; border-color: aquamarine;"></div>
+
+  <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
+  <script>
+    function runApp() {
+      liff.getProfile().then(profile => {
+        document.getElementById("pictureUrl").src = profile.pictureUrl;
+        document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
+        document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
+        document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
+
+        // Store profile data to include in form submission
+        document.getElementById("form").dataset.userId = profile.userId;
+        document.getElementById("form").dataset.displayName = profile.displayName;
+        document.getElementById("form").dataset.statusMessage = profile.statusMessage;
+        document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
+      }).catch(err => console.error("Error getting profile:", err));
+    }
+
+    liff.init({ liffId: "2006115374-wQ7pvRxv" }, () => {
+      if (liff.isLoggedIn()) {
+        runApp();
+      } else {
+        liff.login();
+      }
+    }, err => console.error("LIFF Initialization Error:", err.code, err.message));
+
+    document.getElementById("form").addEventListener("submit", function (e) {
+      e.preventDefault(); // Prevent the default form submission
+      document.getElementById("message").textContent = "Submitting..";
+      document.getElementById("message").style.display = "block";
+      document.getElementById("submit-button").disabled = true;
+
+      // Collect the form data
+      var formData = new FormData(this);
+
+      // Append LIFF profile data to the form data
+      formData.append("UserId", this.dataset.userId || "Not Available");
+      formData.append("DisplayName", this.dataset.displayName || "Not Available");
+      formData.append("StatusMessage", this.dataset.statusMessage || "Not Available");
+      formData.append("pictureUrl", this.dataset.pictureUrl || "Not Available");
+
+      var keyValuePairs = [];
+      for (var pair of formData.entries()) {
+        keyValuePairs.push(pair[0] + "=" + encodeURIComponent(pair[1]));
+      }
+
+      var formDataString = keyValuePairs.join("&");
+
+      // Send a POST request to your Google Apps Script
+      fetch(
+        "https://script.google.com/macros/s/AKfycbyWB5PM1gxl3UVVkmHMTyv8hRxd3-jBdoCfODX2YRPKgAw0VFM5O1TPEHTFH694Erk2sg/exec",
+        {
+          redirect: "follow",
+          method: "POST",
+          body: formDataString,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        }
+      )
+      .then(function (response) {
+        if (response) {
+          return response.json(); // Assuming your script returns JSON response
+        } else {
+          throw new Error("Failed to submit the form.");
+        }
+      })
+      .then(function (data) {
+        document.getElementById("message").textContent = "Data submitted successfully!";
+        document.getElementById("message").style.display = "block";
+        document.getElementById("message").style.backgroundColor = "green";
+        document.getElementById("message").style.color = "beige";
+        document.getElementById("submit-button").disabled = false;
+        document.getElementById("form").reset();
+
+        // closeWindow call
+        if (!liff.isInClient()) {
+          window.alert('This button is unavailable as LIFF is currently being opened in an external browser.');
+        } else {
+          alert("ข้อมูลถูกบันทึกแล้ว");
+          liff.closeWindow();
+        }
+
+        // Send message
+        liff.sendMessages([
+          {
+            type: "text",
+            text: "ข้อมูลถูกบันทึกแล้ว",
+          },
+        ])
+        .then(() => {
+          console.log("message sent");
+        })
+        .catch((err) => {
+          console.log("error", err);
+        });
+
+        setTimeout(function () {
+          document.getElementById("message").textContent = "";
+          document.getElementById("message").style.display = "none";
+        }, 2600);
+      })
+      .catch(function (error) {
+        console.error("Error submitting form:", error);
+        document.getElementById("message").textContent = "Error submitting form.";
+        document.getElementById("message").style.display = "block";
+        document.getElementById("message").style.backgroundColor = "red";
