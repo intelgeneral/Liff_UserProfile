@@ -3,201 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My LIFF and Data Entry Form</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <title>Register Users</title>
+  <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
   <style>
-    #pictureUrl { display: block; margin: 0 auto; }
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to right, #96CEB4, #FFDD94);
+    }
+    .form-container {
+      max-width: 500px;
+      width: 100%;
+      padding: 40px;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    .button {
+      width: 100%;
+    }
   </style>
 </head>
 <body>
-  <section class="hero is-primary is-bold">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">Register UsersLine</h1>
-      </div>
-    </div>
-  </section>
 
-  <section class="container m-4 pl-4">
-    <img id="pictureUrl" width="25%">
-    <p id="userId"></p>
-    <p id="displayName"></p>
-    <p id="statusMessage"></p>
-    
-  </section>
-
-  <form id="form" class="container m-4 pl-4" method="POST">
+<div class="form-container">
+  <h1 class="title is-3 has-text-primary">ลงทะเบียนผู้ใช้งาน</h1>
+  
+  <form id="form" method="POST">
     <div class="field">
-      <label class="label">Client Name</label>
+      <label class="label">เลขที่ห้อง</label>
       <div class="control">
-        <input class="input" type="text" placeholder="Your Client Name" name="Client Name" />
+        <input class="input" type="number" name="RoomNo" placeholder="กรอกเลขห้อง 4 หลัก" min="1000" max="9999" required>
       </div>
     </div>
-	
-	<div class="field">
-      <label class="label">RoomNo</label>
-      <div class="control">
-        <input class="input" type="text" placeholder="Your RoomNo" name="RoomNo" />
-      </div>
-    </div>
-
-    <!-- <div class="field">
-      <label class="label">Email</label>
-      <div class="control">
-        <input class="input" type="email" placeholder="Your Email" name="Email" />
-      </div>
-    </div> -->
-
-    <!-- <div class="field">
-      <label class="label">Password</label>
-      <div class="control">
-        <input class="input" type="password" placeholder="Your Password" name="Password" />
-      </div>
-    </div> -->
-
-    <!--<div class="field">
-      <label class="label">Date of Birth</label>
-      <div class="control">
-        <input class="input" type="date" placeholder="Your Date of Birth" name="DOB" />
-      </div>
-    </div> -->
 
     <div class="field">
-      <label class="label">Gender</label>
+      <label class="label">เลขบัตรประชาชน</label>
+      <div class="control">
+        <input class="input" type="number" name="IDcard" placeholder="กรอกเลขบัตรประชาชน 13 หลัก" minlength="13" maxlength="13" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">เพศ</label>
       <div class="control">
         <label class="radio">
-          <input type="radio" name="Gender" value="male" /> Male
+          <input type="radio" name="Gender" value="male" required> ชาย
         </label>
         <label class="radio">
-          <input type="radio" name="Gender" value="female" /> Female
+          <input type="radio" name="Gender" value="female" required> หญิง
         </label>
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Agree to Terms</label>
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox" name="Agree To Terms" value="yes" /> I agree to the terms and conditions
-        </label>
-      </div>
+      <label class="checkbox">
+        <input type="checkbox" name="AgreeToTerms" required> ยอมรับเงื่อนไขการใช้งาน
+      </label>
     </div>
 
-    <div class="field">
-      <label class="label">Additional Information</label>
-      <div class="control">
-        <textarea class="textarea" placeholder="Any additional information" name="Notes"></textarea>
-      </div>
-    </div>
-
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-primary" type="submit" id="submit-button">Sign Up</button>
-      </div>
-      <div class="control">
-        <button class="button is-danger" type="reset">Cancel</button>
-      </div>
+    <div class="control">
+      <button class="button is-primary" type="submit" id="submit-button">ลงทะเบียน</button>
     </div>
   </form>
+</div>
 
-  <div id="message" style="display: none; margin: 20px; font-weight: bold; color: green; padding: 8px; background-color: beige; border-radius: 4px; border-color: aquamarine;"></div>
+<script>
+  document.getElementById("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    alert("ส่งข้อมูลสำเร็จ 🎯");
+    this.reset();
+  });
+</script>
 
-  <script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
-  <script>
-    function runApp() {
-      liff.getProfile().then(profile => {
-        document.getElementById("pictureUrl").src = profile.pictureUrl;
-        document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId;
-        document.getElementById("displayName").innerHTML = '<b>DisplayName:</b> ' + profile.displayName;
-        document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;
-        
+<div id="message" style="display:none; margin: 20px; font-weight: bold;"></div>
 
-        // Debugging logs
-        console.log("Profile Data: ", profile);
+<script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
+<script>
+let userProfile = {};
 
-        // Store profile data to include in form submission
-        document.getElementById("form").dataset.userId = profile.userId;
-        document.getElementById("form").dataset.displayName = profile.displayName;
-        document.getElementById("form").dataset.statusMessage = profile.statusMessage;
-        document.getElementById("form").dataset.pictureUrl = profile.pictureUrl;
+async function runApp() {
+  try {
+    const profile = await liff.getProfile();
+    userProfile = profile;
+    document.getElementById("form").dataset.userId = profile.userId;
+    console.log("LIFF Profile:", profile);
+  } catch (err) {
+    console.error("Error getting profile:", err);
+  }
+}
 
-      }).catch(err => console.error("Error getting profile:", err));
+liff.init({ liffId: "2006115374-wQ7pvRxv" }, () => {
+  if (liff.isLoggedIn()) {
+    runApp();
+  } else {
+    liff.login();
+  }
+});
+
+document.getElementById("form").onsubmit = async function (e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  formData.append("UserId", userProfile.userId);
+  formData.append("DisplayName", userProfile.displayName);
+
+  document.getElementById("submit-button").classList.add("is-loading");
+
+  const response = await fetch(
+    "https://script.google.com/macros/s/AKfycbyWB5PM1gxl3UVVkmHMTyv8hRxd3-jBdoCfODX2YRPKgAw0VFM5O1TPEHTFH694Erk2sg/exec",
+    {
+      method: "POST",
+      body: new URLSearchParams(formData),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
     }
+  );
 
-    liff.init({ liffId: "2006115374-wQ7pvRxv" }, () => {
-      if (liff.isLoggedIn()) {
-        runApp();
-      } else {
-        liff.login();
-      }
-    }, err => console.error("LIFF Initialization Error:", err.code, err.message));
+  const result = await response.json();
 
-    document.getElementById("form").addEventListener("submit", function (e) {
-      e.preventDefault(); // Prevent the default form submission
-      document.getElementById("message").textContent = "Submitting..";
-      document.getElementById("message").style.display = "block";
-      document.getElementById("submit-button").disabled = true;
+  if (result.status === "success") {
+    alert(`ขอบคุณ ${userProfile.displayName} ข้อมูลของคุณถูกบันทึกแล้ว 🎯`);
+    liff.sendMessages([{ type: "text", text: `ขอบคุณ ${userProfile.displayName} ที่ลงทะเบียนครับ` }]);
+    liff.closeWindow();
+  } else {
+    alert("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+  }
 
-      // Collect the form data
-      var formData = new FormData(this);
-
-      // Debugging logs
-      console.log("Form Data before appending profile:", Object.fromEntries(formData));
-
-      // Append LIFF profile data to the form data
-      formData.append("UserId", this.dataset.userId || "Not Available");
-      formData.append("DisplayName", this.dataset.displayName || "Not Available");
-      formData.append("StatusMessage", this.dataset.statusMessage || "Not Available");
-      formData.append("pictureUrl", this.dataset.pictureUrl || "Not Available");
-
-      // Debugging logs
-      console.log("Form Data after appending profile:", Object.fromEntries(formData));
-
-      var keyValuePairs = [];
-      for (var pair of formData.entries()) {
-        keyValuePairs.push(pair[0] + "=" + encodeURIComponent(pair[1]));
-      }
-
-      var formDataString = keyValuePairs.join("&");
-
-      // Send a POST request to your Google Apps Script
-      fetch(
-        "https://script.google.com/macros/s/AKfycbyWB5PM1gxl3UVVkmHMTyv8hRxd3-jBdoCfODX2YRPKgAw0VFM5O1TPEHTFH694Erk2sg/exec",
-        {
-          redirect: "follow",
-          method: "POST",
-          body: formDataString,
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        }
-      )
-      .then(function (response) {
-        if (response) {
-          return response.json(); // Assuming your script returns JSON response
-        } else {
-          throw new Error("Failed to submit the form.");
-        }
-      })
-      .then(function (data) {
-        document.getElementById("message").textContent = "Data submitted successfully!";
-        document.getElementById("message").style.display = "block";
-        document.getElementById("message").style.backgroundColor = "green";
-        document.getElementById("message").style.color = "beige";
-        document.getElementById("submit-button").disabled = false;
-        document.getElementById("form").reset();
-
-        setTimeout(function () {
-          document.getElementById("message").textContent = "";
-          document.getElementById("message").style.display = "none";
-        }, 2600);
-      })
-      .catch(function (error) {
-        console.error("Submission Error:", error);
-        document.getElementById("message").textContent = "An error occurred while submitting the form.";
-        document.getElementById("message").style.display = "block";
-      });
-    });
-  </script>
+  document.getElementById("submit-button").classList.remove("is-loading");
+};
+</script>
 </body>
 </html>
